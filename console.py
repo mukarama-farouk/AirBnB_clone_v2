@@ -127,15 +127,16 @@ class HBNBCommand(cmd.Cmd):
         if len(new) >= 2:
             new.pop(0)
             for param in new:
-                param = param.split("=")
-                if re.search(r'^"(.*?)"$', param[1]):
-                    param[1] = param[1][1:-1]
-                    param[1] = param[1].replace("_", " ")
-                    setattr(new_instance, param[0], str(param[1]))
-                elif re.search(r'^\d+\.\d+$', param[1]):
-                    setattr(new_instance, param[0], float(param[1]))
-                elif re.search(r'^\d+$', param[1]):
-                    setattr(new_instance, param[0], int(param[1]))
+                if if re.search(r'^.*?=.*?$', param):
+                    param = param.split("=")
+                    if re.search(r'^"(.*?)"$', param[1]):
+                        param[1] = param[1][1:-1]
+                        param[1] = param[1].replace("_", " ")
+                        setattr(new_instance, param[0], str(param[1]))
+                    elif re.search(r'^\d+\.\d+$', param[1]):
+                        setattr(new_instance, param[0], float(param[1]))
+                    elif re.search(r'^\d+$', param[1]):
+                        setattr(new_instance, param[0], int(param[1]))
         new_instance.save()
         print(new_instance.id)
 
