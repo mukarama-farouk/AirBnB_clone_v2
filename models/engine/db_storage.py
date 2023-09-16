@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
-import os
-
+import os    
 
 user = os.environ.get('HBNB_MYSQL_USER')
 pwd = os.environ.get('HBNB_MYSQL_PWD')
@@ -22,15 +21,27 @@ class DBStorage:
             self.__engine.execute(f"DROP TABLE {database}.*")
 
     def all(self, cls=None):
+        from models.user import User
+        from models.place import Place
+        from models.state import State, Base
+        from models.city import City, Base
+        from models.amenity import Amenity
+        from models.review import Review
+
         if cls is None:
-            cls = [User, State, City, Amenity, Place, Review]
-        query = self.__session.query(*cls).all()
+            cls = [State, City]
+            query = []
+            for c in cls:
+                query += self.__session.query(c).all()
+        else:
+            query = self.__session.query(cls).all()
         cls_objs = {}
         for obj in query:
-            cls_objs[obj.name + '.' + obj.id] = obj
+            cls_objs[obj.to_dict()['__class__'] + '.' + obj.id] = obj
         return cls_objs
 
     def new(self, obj):
+        print('here')
         self.__session.add(obj)
 
     def save(self):

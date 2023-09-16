@@ -124,8 +124,6 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         new_instance = HBNBCommand.classes[new[0]]()
-        storage.save()
-        print(new_instance.id)
         if len(new) >= 2:
             new.pop(0)
             for param in new:
@@ -138,6 +136,8 @@ class HBNBCommand(cmd.Cmd):
                     setattr(new_instance, param[0], float(param[1]))
                 elif re.search(r'^\d+$', param[1]):
                     setattr(new_instance, param[0], int(param[1]))
+        new_instance.save()
+        print(new_instance.id)
 
     def help_create(self):
         """ Help information for the create method """
@@ -214,16 +214,17 @@ class HBNBCommand(cmd.Cmd):
         """ Shows all objects, or all objects of a class"""
         print_list = []
 
+        obj_dict = storage.all()
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in obj_dict.items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in obj_dict.items():
                 print_list.append(str(v))
 
         print(print_list)
