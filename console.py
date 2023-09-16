@@ -127,7 +127,7 @@ class HBNBCommand(cmd.Cmd):
         if len(new) >= 2:
             new.pop(0)
             for param in new:
-                if if re.search(r'^.*?=.*?$', param):
+                if re.search(r'^.*?=.*?$', param):
                     param = param.split("=")
                     if re.search(r'^"(.*?)"$', param[1]):
                         param[1] = param[1][1:-1]
