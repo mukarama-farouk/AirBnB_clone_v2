@@ -29,7 +29,7 @@ class DBStorage:
         from models.review import Review
 
         if cls is None:
-            cls = [State, City]
+            cls = [State, City, User]
             query = []
             for c in cls:
                 query += self.__session.query(c).all()
