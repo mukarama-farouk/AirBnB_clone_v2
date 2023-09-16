@@ -41,7 +41,6 @@ class DBStorage:
         return cls_objs
 
     def new(self, obj):
-        print('here')
         self.__session.add(obj)
 
     def save(self):
