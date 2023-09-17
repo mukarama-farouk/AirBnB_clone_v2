@@ -1,16 +1,52 @@
 #!/usr/bin/python3
 """ Module for testing DB storage"""
-import unittest
-from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
+
+from models.engine import db_storage
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+
+import inspect
 import os
+import unittest
+
+DBStorage = db_storage.DBStorage
 
 
 class test_DBStorage(unittest.TestCase):
     """ a class that to test the DB storage method """
 
-    def setUp(self):
+    @classmethod
+    def setUp(cls):
         """ Set up test environment """
+        cls.db_func = inspect.getmembers(DBStorage, inspect.isfunction)
+
+    def test_docstring(self):
+        """Test for the DBStorage class docstring"""
+        self.assertIsNot(DBStorage.__doc__, None)
+        self.assertTrue(len(DBStorage.__doc__) >= 1,
+                        "DBStorage class needs a docstring")
+
+    def test_methods_docstrings(self):
+        """Test for the presence of docstrings in DBStorage methods"""
+        for func in self.db_func:
+            self.assertIsNot(func[1].__doc__, None,
+                             "{:s} method needs a docstring".format(func[0]))
+            self.assertTrue(len(func[1].__doc__) >= 1,
+                            "{:s} method needs a docstring".format(func[0]))
+
+    def test_module_docstring(self):
+        """Test for the db_storage.py module docstring"""
+        self.assertIsNot(db_storage.__doc__, None,
+                         "db_storage.py needs a docstring")
+        self.assertTrue(len(db_storage.__doc__) >= 1,
+                        "db_storage.py needs a docstring")
 
     def tearDown(self):
         """ Remove storage file at end of tests """

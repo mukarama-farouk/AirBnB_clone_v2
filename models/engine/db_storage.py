@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+"""a module that defines the database storage implementation"""
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
-import os    
+import os
 
 user = os.environ.get('HBNB_MYSQL_USER')
 pwd = os.environ.get('HBNB_MYSQL_PWD')
@@ -11,16 +12,20 @@ env = os.environ.get('HBNB_ENV')
 
 
 class DBStorage:
+    """An implementation of the Database Storage"""
     __engine = None
     __session = None
 
     def __init__(self):
+        """the class constructor for the database storage implementation"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
                 .format(user, pwd, host, database), pool_pre_ping=True)
         if env == 'test':
             self.__engine.execute(f"DROP TABLE {database}.*")
 
     def all(self, cls=None):
+        """a public instance method that returns a dictionary
+            consisting of all queried class from the database"""
         from models.user import User
         from models.place import Place
         from models.state import State, Base
@@ -32,7 +37,7 @@ class DBStorage:
             cls = [State, City, User, Place, Review]
             query = []
             for c in cls:
-                query += self.__session.query(c).all()
+                query.extend(self.__session.query(c).all())
         else:
             query = self.__session.query(cls).all()
         cls_objs = {}
@@ -41,16 +46,24 @@ class DBStorage:
         return cls_objs
 
     def new(self, obj):
+        """a public instance method that adds a
+            new object to a pending state of the database transaction"""
         self.__session.add(obj)
 
     def save(self):
+        """a public instance method that persists the actions
+            performed in the current transaction"""
         self.__session.commit()
 
     def delete(self, obj=None):
+        """a public instance method that deletes a created instance
+            from the database"""
         if obj:
             self.__session.delete(obj)
 
     def reload(self):
+        """a public instance method that initializes
+            a thread-safe version of a session"""
         from models.user import User
         from models.place import Place
         from models.state import State, Base
@@ -61,4 +74,3 @@ class DBStorage:
 
         Session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
         self.__session = Session()
-
