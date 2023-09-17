@@ -21,11 +21,11 @@ class DBStorage:
             self.__engine.execute(f"DROP TABLE {database}.*")
 
     def all(self, cls=None):
+        from models.amenity import Amenity
         from models.user import User
         from models.place import Place
         from models.state import State, Base
         from models.city import City, Base
-        from models.amenity import Amenity
         from models.review import Review
 
         if cls is None:
@@ -52,10 +52,10 @@ class DBStorage:
 
     def reload(self):
         from models.user import User
+        from models.amenity import Amenity
         from models.place import Place
         from models.state import State, Base
         from models.city import City, Base
-        from models.amenity import Amenity
         from models.review import Review
         Base.metadata.create_all(self.__engine)
 
