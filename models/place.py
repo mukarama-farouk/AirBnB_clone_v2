@@ -71,8 +71,5 @@ class Place(BaseModel, Base):
         def amenities(self, obj):
             from models.__init__ import storage
             from models.amenity import Amenity
-            if isinstance(obj, Amenity):
-                strg = storage.all(Amenity)
-                for value in strg:
-                    if (isinstance(obj, value)):
-                        self.amenity_ids.append(obj.id)
+            if (isinstance(obj, storage.all(Amenity))):
+                self.amenity_ids.append(obj.id)
