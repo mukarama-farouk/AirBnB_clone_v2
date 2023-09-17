@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy import MetaData
 import os    
 
 user = os.environ.get('HBNB_MYSQL_USER')
@@ -18,7 +19,8 @@ class DBStorage:
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
                 .format(user, pwd, host, database), pool_pre_ping=True)
         if env == 'test':
-            self.__engine.execute(f"DROP TABLE {database}.*")
+            metadata = MetaData()
+            metadata.drop_all(self.__engine, checkfirst=False)
 
     def all(self, cls=None):
         from models.amenity import Amenity
