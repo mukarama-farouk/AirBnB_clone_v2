@@ -22,6 +22,7 @@ known_classes = {"Amenity": Amenity, "City": City, "Place": Place,
 
 class test_DBStorage(unittest.TestCase):
     """ a class that tests the DB storage method """
+
     @classmethod
     def setUp(cls):
         """ Set up test environment """
