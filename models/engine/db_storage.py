@@ -24,10 +24,7 @@ class DBStorage:
             self.__engine.execute(f"DROP TABLE {database}.*")
 
     def all(self, cls=None):
-<<<<<<< HEAD
-=======
         from models.amenity import Amenity
->>>>>>> 7445d11 (fixed merge conflit)
         """a public instance method that returns a dictionary
             consisting of all queried class from the database"""
         from models.user import User
