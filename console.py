@@ -133,6 +133,7 @@ class HBNBCommand(cmd.Cmd):
                         if re.search(r'^"(.*?)"$', param[1]):
                             param[1] = param[1][1:-1]
                             param[1] = param[1].replace("_", " ")
+                            param[1] = param[1].replace('\\"', '"')
                             setattr(new_instance, param[0], str(param[1]))
                         elif re.search(r'^\d+\.\d+$', param[1]):
                             setattr(new_instance, param[0], float(param[1]))
