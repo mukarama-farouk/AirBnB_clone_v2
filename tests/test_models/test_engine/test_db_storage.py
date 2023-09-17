@@ -17,11 +17,11 @@ import os
 import unittest
 
 DBStorage = db_storage.DBStorage
-
+known_classes = {"Amenity": Amenity, "City": City, "Place": Place,
+                 "Review": Review, "State": State, "User": User}
 
 class test_DBStorage(unittest.TestCase):
-    """ a class that to test the DB storage method """
-
+    """ a class that tests the DB storage method """
     @classmethod
     def setUp(cls):
         """ Set up test environment """
