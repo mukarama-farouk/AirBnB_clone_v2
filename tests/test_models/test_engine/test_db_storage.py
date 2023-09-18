@@ -79,13 +79,15 @@ if env_value == 'db':
             new_user.first_name = "hazel"
             new_user.last_name = "hasbi"
             new_review = Review(text="good place to stay", place_id="x5050", user_id="x05")
-            new_user.places = [Place(city_id="x5050", user_id="b40",
+            new_places = Place(city_id="x5050", user_id="b40",
                                     name="johannesburg",
                                     description="the capital of SA",
                                     number_rooms=5, max_guest=9,
                                     price_by_night=100, latitude=12.0,
-                                    longitude=15.5, reviews=new_review)]
-            new_user.reviews = new_review
+                                    longitude=15.5)
+            new_places.reviews.append(new_review)
+            new_user.places.append(new_places)
+            new_user.reviews.append(new_review)
             session.add(new_user)
             session.commit()
             session.close()
