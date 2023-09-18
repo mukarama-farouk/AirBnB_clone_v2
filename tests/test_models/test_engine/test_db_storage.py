@@ -10,6 +10,8 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 import inspect
 import os
@@ -32,10 +34,13 @@ if env_value == "db":
 if env_value == 'db':
     class test_DBStorage(unittest.TestCase):
         """ a class that tests the DB storage method """
-        @classmethod
-        def setUp(cls):
+        def setUp(self):
             """ Set up test environment """
-            cls.db_func = inspect.getmembers(DBStorage, inspect.isfunction)
+            self.db_func = inspect.getmembers(DBStorage, inspect.isfunction)
+            self.engine = create_engine(f"mysql+mysqldb://{user}"
+                                        ":{pwd}@{host}/{database}",
+                                        pool_pre_ping=True)
+            self.Session = sessionmaker(bind=self.engine)
 
         def test_docstring(self):
             """Test for the DBStorage class docstring"""
@@ -63,9 +68,36 @@ if env_value == 'db':
         def tearDown(self):
             """ Remove storage file at end of tests """
             """cleanup actions go here"""
+            self.engine.dispose()
 
         def test_new(self):
             """ test case for creation of newly created instances """
+            session = self.Session()
+            new_user = User()
+            new_user.email = "mail@google.com"
+            new_user.password = "googlepassw0rd"
+            new_user.first_name = "hazel"
+            new_user.last_name = "hasbi"
+            new_review = Review(text="good place to stay", place_id="x5050", user_id="x05")
+            new_user.places = [Place(city_id="x5050", user_id="b40",
+                                    name="johannesburg",
+                                    description="the capital of SA",
+                                    number_rooms=5, max_guest=9,
+                                    price_by_night=100, latitude=12.0,
+                                    longitude=15.5, reviews=new_review)]
+            new_user.reviews = new_review
+            session.add(new_user)
+            session.commit()
+            session.close()
+
+            session = self.Session()
+            res_user = session.query(User).filter(User.first_name == "hazel").first()
+            session.close()
+
+            self.assertIsNotNone(res_user)
+            self.assertEqual(res_user.first_name, "hazel")
+            self.assertIsNotNone(res_user.places)
+            self.assertEqual(res_user.places.reviews, new_review)
 
         def test_all(self):
             """ test case for the proper return of all instances of a class """
