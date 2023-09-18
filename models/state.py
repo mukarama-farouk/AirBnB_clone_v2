@@ -21,6 +21,7 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             from models.__init__ import storage
+            from models.city import City
             obj_list = []
             strg = storage.all(City)
             for value in strg:

@@ -2,7 +2,12 @@
 """a module that defines the database storage implementation"""
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
+<<<<<<< HEAD
 import os
+=======
+from sqlalchemy import MetaData
+import os    
+>>>>>>> 930163039aceddc877a0623312ad96881deb4d57
 
 user = os.environ.get('HBNB_MYSQL_USER')
 pwd = os.environ.get('HBNB_MYSQL_PWD')
@@ -21,21 +26,24 @@ class DBStorage:
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'\
                 .format(user, pwd, host, database), pool_pre_ping=True)
         if env == 'test':
-            self.__engine.execute(f"DROP TABLE {database}.*")
+            metadata = MetaData()
+            metadata.drop_all(self.__engine, checkfirst=False)
 
     def all(self, cls=None):
         from models.amenity import Amenity
+<<<<<<< HEAD
         """a public instance method that returns a dictionary
             consisting of all queried class from the database"""
+=======
+>>>>>>> 930163039aceddc877a0623312ad96881deb4d57
         from models.user import User
         from models.place import Place
         from models.state import State, Base
         from models.city import City, Base
-        from models.amenity import Amenity
         from models.review import Review
 
         if cls is None:
-            cls = [State, City, User, Place, Review]
+            cls = [State, City, User, Place, Review, Amenity]
             query = []
             for c in cls:
                 query.extend(self.__session.query(c).all())
@@ -66,10 +74,10 @@ class DBStorage:
         """a public instance method that initializes
             a thread-safe version of a session"""
         from models.user import User
+        from models.amenity import Amenity
         from models.place import Place
         from models.state import State, Base
         from models.city import City, Base
-        from models.amenity import Amenity
         from models.review import Review
         Base.metadata.create_all(self.__engine)
 
