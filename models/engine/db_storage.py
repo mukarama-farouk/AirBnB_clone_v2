@@ -2,12 +2,8 @@
 """a module that defines the database storage implementation"""
 from sqlalchemy import (create_engine)
 from sqlalchemy.orm import scoped_session, sessionmaker
-<<<<<<< HEAD
-import os
-=======
 from sqlalchemy import MetaData
-import os    
->>>>>>> 930163039aceddc877a0623312ad96881deb4d57
+import os
 
 user = os.environ.get('HBNB_MYSQL_USER')
 pwd = os.environ.get('HBNB_MYSQL_PWD')
@@ -31,11 +27,8 @@ class DBStorage:
 
     def all(self, cls=None):
         from models.amenity import Amenity
-<<<<<<< HEAD
         """a public instance method that returns a dictionary
             consisting of all queried class from the database"""
-=======
->>>>>>> 930163039aceddc877a0623312ad96881deb4d57
         from models.user import User
         from models.place import Place
         from models.state import State, Base
