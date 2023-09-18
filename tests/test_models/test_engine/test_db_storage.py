@@ -12,6 +12,7 @@ from models.state import State
 from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError
 
 import inspect
 import os
@@ -32,15 +33,19 @@ if env_value == "db":
     DBStorage = db_storage.DBStorage
 
 if env_value == 'db':
+    print(f"user: {user}, password: {pwd}, host: {host}")
+
     class test_DBStorage(unittest.TestCase):
         """ a class that tests the DB storage method """
         def setUp(self):
             """ Set up test environment """
+            try:
+                self.engine = create_engine(f"mysql+mysqldb://{user}:{pwd}@{host}/{database}",
+                                            pool_pre_ping=True)
+                self.Session = sessionmaker(bind=self.engine)
+            except SQLAlchemyError as e:
+                print(f"Error connecting to the database: {e}")
             self.db_func = inspect.getmembers(DBStorage, inspect.isfunction)
-            self.engine = create_engine(f"mysql+mysqldb://{user}"
-                                        ":{pwd}@{host}/{database}",
-                                        pool_pre_ping=True)
-            self.Session = sessionmaker(bind=self.engine)
 
         def test_docstring(self):
             """Test for the DBStorage class docstring"""
