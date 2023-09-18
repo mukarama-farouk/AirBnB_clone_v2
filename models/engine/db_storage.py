@@ -26,9 +26,9 @@ class DBStorage:
             metadata.drop_all(self.__engine, checkfirst=False)
 
     def all(self, cls=None):
-        from models.amenity import Amenity
         """a public instance method that returns a dictionary
             consisting of all queried class from the database"""
+        from models.amenity import Amenity
         from models.user import User
         from models.place import Place
         from models.state import State, Base
