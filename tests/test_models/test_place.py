@@ -4,11 +4,15 @@ from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
 
 import os
-env_value = os.environ.get('HBNB_TYPE_STORAGE')
+
+env_value = os.environ.get("HBNB_TYPE_STORAGE")
+
 
 class test_Place(test_basemodel):
     """ """
-    if env_value != 'db':
+
+    if env_value != "db":
+
         def __init__(self, *args, **kwargs):
             """ """
             super().__init__(*args, **kwargs)
@@ -19,7 +23,7 @@ class test_Place(test_basemodel):
             """ """
             new = self.value()
             self.assertEqual(type(new.city_id), str)
-    
+
         def test_user_id(self):
             """ """
             new = self.value()

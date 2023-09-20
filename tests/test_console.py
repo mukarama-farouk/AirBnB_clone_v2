@@ -18,7 +18,7 @@ import console
 
 class TestConsole(unittest.TestCase):
     def setUp(self):
-        """ Create file at the beginning of every test"""
+        """Create file at the beginning of every test"""
         try:
             os.remove("file.json")
         except IOError:
@@ -26,18 +26,18 @@ class TestConsole(unittest.TestCase):
         FileStorage._FileStorage__objects = {}
 
     def tearDown(self):
-        """ Delete created file after every test"""
+        """Delete created file after every test"""
         try:
             os.remove("file.json")
         except IOError:
             pass
 
     def test_module_doc(self):
-        """ Test for module documentation"""
+        """Test for module documentation"""
         self.assertIsNotNone(console.__doc__)
 
     def test_class_doc(self):
-        """ Test for class documentation"""
+        """Test for class documentation"""
         self.assertIsNotNone(HBNBCommand.__doc__)
 
     def test_method_docs(self):
@@ -63,57 +63,59 @@ class TestConsole(unittest.TestCase):
             self.assertIsNotNone(meth.__doc__)
 
     def test_quit(self):
-        """ Test quit method"""
+        """Test quit method"""
         pass
 
     def test_empty_line(self):
-        """ Test empty_line method"""
+        """Test empty_line method"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("")
             output = f.getvalue().strip()
             self.assertEqual(output, "")
 
     def test_help_create(self):
-        """ Test help_create method"""
+        """Test help_create method"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("help create")
             output = f.getvalue().strip()
             self.assertIsNotNone(output)
 
     def test_help_show(self):
-        """ Test help_show method"""
+        """Test help_show method"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("help show")
             output = f.getvalue().strip()
             self.assertIsNotNone(output)
 
     def test_help_destroy(self):
-        """ Test help_destroy method"""
+        """Test help_destroy method"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("help destroy")
             output = f.getvalue().strip()
             self.assertIsNotNone(output)
 
     def test_help_all(self):
-        """ Test help_all method"""
+        """Test help_all method"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("help all")
             output = f.getvalue().strip()
             self.assertIsNotNone(output)
 
     def test_help_update(self):
-        """ Test help_update method"""
+        """Test help_update method"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("help update")
             output = f.getvalue().strip()
             self.assertIsNotNone(output)
 
     def test_create_with_valid_class_name_User(self):
-        """ Test create with valid class name"""
+        """Test create with valid class name"""
         with patch("sys.stdout", new=StringIO()) as f:
-            HBNBCommand().onecmd("create User email=\"user@gmail\""
-                                 " password=\"passwordr@gmail\" first"
-                                 "_name=\"first_name@gmail\"")
+            HBNBCommand().onecmd(
+                'create User email="user@gmail"'
+                ' password="passwordr@gmail" first'
+                '_name="first_name@gmail"'
+            )
             output = f.getvalue().strip()
             try:
                 uuid.UUID(output)
@@ -177,19 +179,18 @@ class TestConsole(unittest.TestCase):
     #             self.fail("Output is not a valid UUID")
 
     def test_create_without_class_name(self):
-        """ Test create without class name"""
+        """Test create without class name"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("create")
             output = f.getvalue().strip()
             self.assertEqual(output, "** class name missing **")
 
     def test_create_with_invalid_class_name(self):
-        """ Test create with invalid class name"""
+        """Test create with invalid class name"""
         with patch("sys.stdout", new=StringIO()) as f:
             HBNBCommand().onecmd("create MyModel")
             output = f.getvalue().strip()
             self.assertEqual(output, "** class doesn't exist **")
-
 
 
 if __name__ == "__main__":
