@@ -6,15 +6,17 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 import os
-env_value = os.environ.get('HBNB_TYPE_STORAGE')
+
+env_value = os.environ.get("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
-    """ State class """
+    """State class"""
+
     __tablename__ = "states"
-    if env_value == 'db':
+    if env_value == "db":
         name = Column(String(128), nullable=False)
-        cities = relationship('City', backref='state')
+        cities = relationship("City", backref="state")
     else:
         name = ""
 
@@ -22,6 +24,7 @@ class State(BaseModel, Base):
         def cities(self):
             from models.__init__ import storage
             from models.city import City
+
             obj_list = []
             strg = storage.all(City)
             for value in strg:
