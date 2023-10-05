@@ -53,4 +53,3 @@ def deploy():
         return do_deploy(path)
     except:
         return False
-
