@@ -25,7 +25,7 @@ def do_pack():
         archive_name = "versions/web_static_{}.tgz".format(timestamp)
         command = "tar -czvf {} {}".format(archive_name, src_folder)
         local(command)
-    except:
+    except Exception as e:
         None
 
 
@@ -41,7 +41,6 @@ def do_deploy(archive_path):
         # Upload the archive to /tmp/ directory on the web server
         put(archive_path, '/tmp/')
 
-        # Extract the archive to /data/web_static/releases/<archive filename without extension>
         archive_filename = os.path.basename(archive_path)
         folder_name = archive_filename.split('.')[0]
         release_path = '/data/web_static/releases/{}'.format(folder_name)
