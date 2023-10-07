@@ -17,9 +17,10 @@ def do_pack():
 
         local("mkdir -p versions")
         src_folder = "web_static"
-        archive_name = f"versions/web_static_{timestamp}.tgz"
+        archive_name = "versions/web_static_{}.tgz".format(timestamp)
+        command = "tar -czvf {} {}".format(archive_name, src_folder)
+        local(command)
 
-        local(f"tar -czvf {archive_name} {src_folder}")
     except:
         None
 
