@@ -25,7 +25,7 @@ def do_pack():
         archive_name = "versions/web_static_{}.tgz".format(timestamp)
         command = "tar -czvf {} {}".format(archive_name, src_folder)
         local(command)
-    except Exception as e:
+    except:
         None
 
 
