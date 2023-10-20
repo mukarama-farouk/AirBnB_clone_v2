@@ -1,11 +1,11 @@
 #!/usr/bin/python3
 """This module writes a script that starts a web app using Flask
 """
-
 from flask import Flask
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
 
 @app.route('/')
 def hello_hbnb():
@@ -21,6 +21,7 @@ def display():
 def display_c_is_fun(text):
 	"""Displays 'C ' followed by the value of the text variable"""
 	return 'C {}'.format(text.replace('_', ' '))
+
 @app.route('/python')
 @app.route('/python/<text>')
 def python_is_cool(text="is cool"):
