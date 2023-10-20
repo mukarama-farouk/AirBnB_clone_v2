@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""This module writes a script that starts a web app using Flask
+"""This module writes a script that starts a
+web app using Flask
 """
 from flask import Flask
 
