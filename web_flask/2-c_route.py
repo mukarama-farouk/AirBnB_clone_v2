@@ -22,5 +22,6 @@ def display_c(text):
     """Displays 'C ' followed by the value of the text variable"""
     return 'C {}'.format(text.replace('_', ' '))
 
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
